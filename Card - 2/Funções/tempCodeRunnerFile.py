@@ -1,0 +1,2 @@
+
+print(notas_finais)
