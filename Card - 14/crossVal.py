@@ -51,3 +51,5 @@ for indice_treinamento, indice_teste in kfold.split(
 
 
 media = sum(resultados) / len(resultados)
+
+media
