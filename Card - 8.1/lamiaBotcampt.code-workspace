@@ -1,0 +1,15 @@
+{
+	"folders": [
+		{
+			"name": "lamiaBotcampt",
+			"path": ".."
+		},
+		{
+			"name": "Card14",
+			"path": "../../../LAMIA/Card14"
+		}
+	],
+	"settings": {
+		"workbench.iconTheme": "vs-seti"
+	}
+}
