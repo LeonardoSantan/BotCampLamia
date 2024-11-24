@@ -52,4 +52,4 @@ history = model.fit(x_train, y_train, validation_data=(x_test, y_test), batch_si
 
 test_loss, test_accuracy = model.evaluate(x_test, y_test)
 print(f'Test Loss: {test_loss}')
-print(f'Test Accuracy: {test_accuracy}')
+print(f'Test Accuracy: {test_accuracy}') 
