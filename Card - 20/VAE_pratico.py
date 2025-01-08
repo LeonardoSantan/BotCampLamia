@@ -59,3 +59,4 @@ class VAE(nn.Module):
 
 # Instancia o modelo VAE com entrada de 784 dimensões (ex.: imagens 28x28) e espaço latente de 20 dimensões
 model = VAE(784, 20)
+

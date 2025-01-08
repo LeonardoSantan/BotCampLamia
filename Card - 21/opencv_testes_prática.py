@@ -1,41 +1,57 @@
 import cv2
 import numpy as np
 
-image = cv2.imread('./Card - 21/image.png')
-hsv_image = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
+# Carrega a imagem do diretório especificado.
+imagem = cv2.imread('./Card - 21/image.png')
 
-blue_lower = np.array([100, 150, 50])
-blue_upper = np.array([140, 255, 255])
-blue_mask = cv2.inRange(hsv_image, blue_lower, blue_upper)
-blue_kernel = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (5, 5))
-blue_mask = cv2.morphologyEx(blue_mask, cv2.MORPH_CLOSE, blue_kernel)
-blue_result = cv2.bitwise_and(image, image, mask=blue_mask)
+# Converte a imagem de BGR para HSV, um espaço de cores mais adequado para segmentação.
+imagem_hsv = cv2.cvtColor(imagem, cv2.COLOR_BGR2HSV)
 
-red_lower1 = np.array([0, 150, 50])
-red_upper1 = np.array([10, 255, 255])
-red_lower2 = np.array([170, 150, 50])
-red_upper2 = np.array([180, 255, 255])
-red_mask1 = cv2.inRange(hsv_image, red_lower1, red_upper1)
-red_mask2 = cv2.inRange(hsv_image, red_lower2, red_upper2)
-red_mask = cv2.addWeighted(red_mask1, 1.0, red_mask2, 1.0, 0.0)
-red_kernel = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (5, 5))
-red_mask = cv2.morphologyEx(red_mask, cv2.MORPH_CLOSE, red_kernel)
-red_result = cv2.bitwise_and(image, image, mask=red_mask)
+# Define os intervalos de cor para azul.
+azul_inferior = np.array([100, 150, 50])
+azul_superior = np.array([140, 255, 255])
+mascara_azul = cv2.inRange(imagem_hsv, azul_inferior, azul_superior)
 
-green_lower = np.array([40, 100, 50])
-green_upper = np.array([80, 255, 255])
-green_mask = cv2.inRange(hsv_image, green_lower, green_upper)
-green_kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (5, 5))
-green_mask = cv2.morphologyEx(green_mask, cv2.MORPH_CLOSE, green_kernel)
-green_result = cv2.bitwise_and(image, image, mask=green_mask)
+# Aplica uma operação de fechamento para melhorar a máscara azul.
+kernel_azul = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (5, 5))
+mascara_azul = cv2.morphologyEx(mascara_azul, cv2.MORPH_CLOSE, kernel_azul)
+resultado_azul = cv2.bitwise_and(imagem, imagem, mask=mascara_azul)
 
-cv2.imshow('Original Image', image)
-cv2.imshow('Blue Mask', blue_mask)
-cv2.imshow('Blue Detection', blue_result)
-cv2.imshow('Red Mask', red_mask)
-cv2.imshow('Red Detection', red_result)
-cv2.imshow('Green Mask', green_mask)
-cv2.imshow('Green Detection', green_result)
+# Define os intervalos de cor para vermelho (usando dois intervalos para cobrir o espectro).
+vermelho_inferior1 = np.array([0, 150, 50])
+vermelho_superior1 = np.array([10, 255, 255])
+vermelho_inferior2 = np.array([170, 150, 50])
+vermelho_superior2 = np.array([180, 255, 255])
+mascara_vermelho1 = cv2.inRange(imagem_hsv, vermelho_inferior1, vermelho_superior1)
+mascara_vermelho2 = cv2.inRange(imagem_hsv, vermelho_inferior2, vermelho_superior2)
 
+# Combina as duas máscaras vermelhas.
+mascara_vermelho = cv2.addWeighted(mascara_vermelho1, 1.0, mascara_vermelho2, 1.0, 0.0)
+
+# Aplica uma operação de fechamento para melhorar a máscara vermelha.
+kernel_vermelho = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (5, 5))
+mascara_vermelho = cv2.morphologyEx(mascara_vermelho, cv2.MORPH_CLOSE, kernel_vermelho)
+resultado_vermelho = cv2.bitwise_and(imagem, imagem, mask=mascara_vermelho)
+
+# Define os intervalos de cor para verde.
+verde_inferior = np.array([40, 100, 50])
+verde_superior = np.array([80, 255, 255])
+mascara_verde = cv2.inRange(imagem_hsv, verde_inferior, verde_superior)
+
+# Aplica uma operação de fechamento para melhorar a máscara verde.
+kernel_verde = cv2.getStructuringElement(cv2.MORPH_RECT, (5, 5))
+mascara_verde = cv2.morphologyEx(mascara_verde, cv2.MORPH_CLOSE, kernel_verde)
+resultado_verde = cv2.bitwise_and(imagem, imagem, mask=mascara_verde)
+
+# Exibe os resultados da segmentação.
+cv2.imshow('Imagem Original', imagem)
+cv2.imshow('Máscara Azul', mascara_azul)
+cv2.imshow('Detecção Azul', resultado_azul)
+cv2.imshow('Máscara Vermelha', mascara_vermelho)
+cv2.imshow('Detecção Vermelha', resultado_vermelho)
+cv2.imshow('Máscara Verde', mascara_verde)
+cv2.imshow('Detecção Verde', resultado_verde)
+
+# Aguarda o pressionamento de qualquer tecla para encerrar.
 cv2.waitKey(0)
 cv2.destroyAllWindows()
