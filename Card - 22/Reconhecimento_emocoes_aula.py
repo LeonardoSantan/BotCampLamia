@@ -10,9 +10,7 @@ import os
 # Exibindo a versão do TensorFlow instalada
 print(f"Versão do TensorFlow: {tf.__version__}")
 
-# -------------------------
 # Configurações iniciais
-# -------------------------
 
 # Carregando a imagem para análise
 def carregar_imagem(caminho):
@@ -30,9 +28,8 @@ def carregar_imagem(caminho):
 teste_img_path = './Material/testes/teste_gabriel.png'
 img = carregar_imagem(teste_img_path)
 
-# -------------------------
 # Carregando os modelos
-# -------------------------
+
 
 # Modelo para detecção de faces
 cascade_faces = 'Material/haarcascade_frontalface_default.xml'
@@ -45,9 +42,7 @@ classifier_emotion = load_model(model_path, compile=False)
 # Classes de emoções reconhecidas pelo modelo
 emotions = ['Raiva', 'Nojo', 'Medo', 'Feliz', 'Triste', 'Surpreso', 'Neutro']
 
-# -------------------------
 # Detecção de faces na imagem
-# -------------------------
 
 def detectar_faces(img):
     """
@@ -61,9 +56,7 @@ def detectar_faces(img):
 faces = detectar_faces(img)
 print(f"Faces detectadas: {faces}")
 
-# -------------------------
 # Análise da emoção
-# -------------------------
 
 def analisar_emocao(img, face_coords):
     """
@@ -103,9 +96,7 @@ if len(faces) > 0:
 else:
     print("Nenhuma face detectada na imagem.")
 
-# -------------------------
 # Processamento em lote de múltiplas imagens
-# -------------------------
 
 def processar_multiplas_imagens(folder_path):
     """
