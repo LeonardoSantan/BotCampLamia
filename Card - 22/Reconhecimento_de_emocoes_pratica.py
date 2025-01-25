@@ -9,6 +9,7 @@ from tensorflow.keras.callbacks import EarlyStopping, ModelCheckpoint
 from sklearn.model_selection import train_test_split
 from tensorflow.keras.utils import to_categorical
 
+
 # Função para carregar e pré-processar os dados
 def load_data():
     """
